@@ -51,7 +51,7 @@ class Header extends Component {
     return (
       <div className="flex pa1 justify-between nowrap padding bottomborder">
         <div className="flex flex-fixed black">
-          {process.env.NODE_ENV}
+          
           <Link to="/" className="ml1 no-underline black">
             Home
           </Link>
