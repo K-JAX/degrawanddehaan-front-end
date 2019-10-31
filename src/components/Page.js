@@ -50,7 +50,7 @@ class Page extends Component {
   render() {
     const { page } = this.state;
     return (
-      <div>
+      <div style={{marginLeft: '315px'}}>
         <div className="pa2">
           <h1>{page.title}</h1>
         </div>

@@ -5,14 +5,8 @@ import { Link } from 'react-router-dom';
 import { createHttpLink } from 'apollo-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloClient } from 'apollo-boost';
-import logo from '../static/images/wordpress-plus-react-header.png';
 import { AUTH_TOKEN } from '../constants';
 import Config from '../config';
-
-const headerImageStyle = {
-  marginTop: 50,
-  marginBottom: 50,
-};
 
 /**
  * GraphQL page query
@@ -130,7 +124,7 @@ class Home extends Component {
     const { match, client } = this.props;
     let uri = match.params.slug;
     if (!uri) {
-      uri = 'welcome';
+      uri = 'home';
     }
     const result = await client.query({
       query: PAGE_QUERY,
@@ -170,9 +164,8 @@ class Home extends Component {
     const authToken = localStorage.getItem(AUTH_TOKEN);
     const { page, posts, pages, userId } = this.state;
     return (
-      <div>
+      <div style={{marginLeft: '315px'}}>
         <div className="pa2">
-          <img src={logo} width="815" style={headerImageStyle} alt="logo" />
           <h1>{page.title}</h1>
           <span
             // eslint-disable-next-line react/no-danger
@@ -180,49 +173,6 @@ class Home extends Component {
               __html: page.content,
             }}
           />
-          <h2>Posts</h2>
-          <ul>
-            {posts.map(post => (
-              <li key={post.node.slug}>
-                <Link to={post.node.link} className="ml1 black">
-                  {post.node.title}
-                </Link>
-              </li>
-            ))}
-          </ul>
-          <h2>Pages</h2>
-          <ul>
-            {pages.map(pageit => (
-              <li key={pageit.node.slug}>
-                <Link to={pageit.node.link} className="ml1 black">
-                  {pageit.node.title}
-                </Link>
-              </li>
-            ))}
-          </ul>
-          {authToken ? (
-            <div>
-              <h2>You Are Logged In</h2>
-              <p>
-                Your user ID is <span>{userId}</span>, retrieved via an
-                authenticated API query.
-              </p>
-            </div>
-          ) : (
-            <div>
-              <h2>You Are Not Logged In</h2>
-              <p>
-                The frontend is not making authenticated API requests.{' '}
-                <a href="/login">Log in.</a>
-              </p>
-            </div>
-          )}
-          <h2>Where You're At</h2>
-          <p>
-            You are looking at the GraphQL-powered React frontend. Be sure to
-            also check out the{' '}
-            <a href="http://localhost:3000/">REST-powered frontend</a>.
-          </p>
         </div>
       </div>
     );

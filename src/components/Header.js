@@ -4,7 +4,22 @@ import { withRouter } from 'react-router';
 import { withApollo } from 'react-apollo';
 import { compose } from 'recompose';
 import gql from 'graphql-tag';
-import { AUTH_TOKEN, USERNAME } from '../constants';
+import { AUTH_TOKEN } from '../constants';
+import logo from '../static/images/logo.png';
+
+const headerSidebarStyle = {
+  zIndex: '10',
+  float: 'left', 
+  position: 'fixed', 
+  width: '277px', 
+  height: '100%', 
+  background: 'white',
+}
+
+const headerImageStyle = {
+  marginTop: '50px',
+  maxWidth: '100%',
+};
 
 /**
  * GraphQL menu query
@@ -45,44 +60,46 @@ class Header extends Component {
   };
 
   render() {
-    const authToken = localStorage.getItem(AUTH_TOKEN);
+    // const authToken = localStorage.getItem(AUTH_TOKEN);
     const { menus } = this.state;
-    const { history } = this.props;
+    // const { history } = this.props;
     return (
-      <div className="flex pa1 justify-between nowrap padding bottomborder">
-        <div className="flex flex-fixed black">
-          <Link to="/" className="ml1 no-underline black">
-            Home
+      <div className="flex pa1 justify-between nowrap padding bottomborder" style={headerSidebarStyle} >
+        <div className="flex flex-fixed black"style={{flexDirection: 'column'}}>
+          <Link to="/" className="no-underline black">
+              <img src={logo} width="215" style={headerImageStyle} alt="logo" />
           </Link>
-          {menus.map(menu => {
-            if (isInternal(menu.type)) {
+          <div className="menuBox">
+            {menus.map(menu => {
+              if (isInternal(menu.type)) {
+                return (
+                  <Link
+                    key={menu.label}
+                    to={menu.url}
+                    className="ml1 no-underline black"
+                  >
+                    {menu.label} -
+                  </Link>
+                );
+              }
               return (
-                <Link
+                <a
                   key={menu.label}
-                  to={menu.url}
+                  href={menu.url}
                   className="ml1 no-underline black"
                 >
                   {menu.label}
-                </Link>
+                </a>
               );
-            }
-            return (
-              <a
-                key={menu.label}
-                href={menu.url}
-                className="ml1 no-underline black"
-              >
-                {menu.label}
-              </a>
-            );
-          })}
+            })}
+          </div> {/* menuBox */}
         </div>
         <div className="flex flex-fixed">
-          <Link to="/search" className="ml1 no-underline black">
+          {/* <Link to="/search" className="ml1 no-underline black">
             Search
-          </Link>
-          <div className="ml1">|</div>
-          {authToken ? (
+          </Link> */}
+          {/* <div className="ml1">|</div> */}
+          {/* authToken ? (
             <button
               type="button"
               className="pointer black"
@@ -97,7 +114,7 @@ class Header extends Component {
             <Link to="/login" className="ml1 no-underline black">
               Login
             </Link>
-          )}
+          ) */}
         </div>
       </div>
     );

@@ -1,7 +1,10 @@
+@import url('https://fonts.googleapis.com/css?family=Cinzel&display=swap');
+
 body {
   margin: 0;
   padding: 0;
-  font-family: Verdana, Geneva, sans-serif;
+  font-family: "Cinzel", serif;
+  /* font-family: Verdana, Geneva, sans-serif; */
 }
 
 input {
@@ -87,4 +90,31 @@ div {
   border-color: buttonface;
   cursor: pointer;
   max-width: 250px;
+}
+
+d-block{
+  display: block !important;
+}
+
+.menuBox{
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(249,243,240, 0.7);
+  width: 300px;
+  margin-left: -50px;
+  padding: 50px;
+}
+
+.menuBox a {
+  font-size: 32px;
+  font-family: 'Cinzel', serif;
+  -webkit-font-smoothing: antialiased;
+  margin: 15px 0;
+}
+
+.bottomsDown{
+  position: absolute;
+  z-index: 0;
+  width: 100%;
+  bottom: 0;
 }
