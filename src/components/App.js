@@ -6,6 +6,7 @@ import Home from './Home';
 import Login from './Login';
 import Search from './Search';
 import Page from './Page';
+import Portfolio from './Portfolio';
 import Post from './Post';
 import Category from './Category';
 
@@ -17,6 +18,7 @@ export default () => (
         <Route exact path="/" component={Home} />
         <Route exact path="/login" component={Login} />
         <Route exact path="/search" component={Search} />
+        <Route exact path="/page/portfolio" component={Portfolio} />
         <Route exact path="/page/:slug" component={Page} />
         <Route exact path="/post/:slug" component={Post} />
         <Route exact path="/category/:slug" component={Category} />

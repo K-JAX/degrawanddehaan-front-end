@@ -56,13 +56,14 @@ class Header extends Component {
       query: MENU_QUERY,
     });
     const menus = result.data.headerMenu;
+    // const menus = result.data.menus.nodes[0].menuItems.edges;
     this.setState({ menus });
   };
 
   render() {
-    // const authToken = localStorage.getItem(AUTH_TOKEN);
+    const authToken = localStorage.getItem(AUTH_TOKEN);
     const { menus } = this.state;
-    // const { history } = this.props;
+    const { history } = this.props;
     return (
       <div className="flex pa1 justify-between nowrap padding bottomborder" style={headerSidebarStyle} >
         <div className="flex flex-fixed black"style={{flexDirection: 'column'}}>

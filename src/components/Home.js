@@ -164,7 +164,7 @@ class Home extends Component {
     const authToken = localStorage.getItem(AUTH_TOKEN);
     const { page, posts, pages, userId } = this.state;
     return (
-      <div style={{marginLeft: '315px'}}>
+      <div style={{ marginLeft: '315px' }}>
         <div className="pa2">
           <h1>{page.title}</h1>
           <span

@@ -18,7 +18,7 @@ const PAGE_QUERY = gql`
 /**
  * Fetch and display a Page
  */
-class Page extends Component {
+class Portfolio extends Component {
   state = {
     page: {
       title: '',
@@ -58,6 +58,7 @@ class Page extends Component {
     const { page } = this.state;
     return (
       <div style={{marginLeft: '315px'}}>
+        <h1>Portfolio</h1>
         <p>{JSON.stringify(page)}</p>
         <div className="pa2">
           <h1>{page.title}</h1>
@@ -73,4 +74,4 @@ class Page extends Component {
   }
 }
 
-export default withApollo(Page);
+export default withApollo(Portfolio);
