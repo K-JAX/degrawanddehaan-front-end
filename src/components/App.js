@@ -1,9 +1,8 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import Header from './Header';
-import Footer from './Footer';
-import Home from './Home';
-import Login from './Login';
+import Header from './Organisms/Header';
+import Footer from './Molecules/Footer';
+import Home from './Templates/Home';
 import Search from './Search';
 import Page from './Page';
 import Portfolio from './Portfolio';
@@ -16,7 +15,6 @@ export default () => (
     <div className="pa1 padding table">
       <Switch>
         <Route exact path="/" component={Home} />
-        <Route exact path="/login" component={Login} />
         <Route exact path="/search" component={Search} />
         <Route exact path="/page/portfolio" component={Portfolio} />
         <Route exact path="/page/:slug" component={Page} />

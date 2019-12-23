@@ -1,9 +1,12 @@
 @import url('https://fonts.googleapis.com/css?family=Cinzel&display=swap');
 
+@import './variables/all';
+
 body {
   margin: 0;
   padding: 0;
   font-family: "Cinzel", serif;
+  background: $GRAD-warm-white;
   /* font-family: Verdana, Geneva, sans-serif; */
 }
 

@@ -5,8 +5,8 @@ import { Link } from 'react-router-dom';
 import { createHttpLink } from 'apollo-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloClient } from 'apollo-boost';
-import { AUTH_TOKEN } from '../constants';
-import Config from '../config';
+import { AUTH_TOKEN } from '../../constants';
+import Config from '../../config';
 
 /**
  * GraphQL page query
@@ -166,6 +166,7 @@ class Home extends Component {
     return (
       <div style={{ marginLeft: '315px' }}>
         <div className="pa2">
+
           <h1>{page.title}</h1>
           <span
             // eslint-disable-next-line react/no-danger
