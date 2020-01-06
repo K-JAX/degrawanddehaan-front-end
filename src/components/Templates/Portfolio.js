@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { withApollo } from 'react-apollo';
+import { Link } from 'react-router-dom';
 import gql from 'graphql-tag';
 
 /**
@@ -15,6 +16,20 @@ const PAGE_QUERY = gql`
   }
 `;
 
+const PROJ_QUERY = gql`
+  query ProjectQuery {
+    projectTypes {
+      edges {
+        node {
+          slug
+          name
+        }
+      }
+    }
+  }
+`;
+
+
 /**
  * Fetch and display a Page
  */
@@ -24,16 +39,19 @@ class Portfolio extends Component {
       title: '',
       content: '',
     },
+    projectTypes: []
   };
 
   componentDidMount() {
     this.executePageQuery();
+    this.executeProjectTypeQuery();
   }
 
   componentDidUpdate( prevProps ) {
     let { props } = this;
     if(props.match.params.slug !== prevProps.match.params.slug){
       this.executePageQuery();
+      this.executeProjectTypeQuery();
     }
   }  
   
@@ -54,8 +72,23 @@ class Portfolio extends Component {
     this.setState({ page });
   };
 
+  executeProjectTypeQuery = async () => {
+    const { match, client } = this.props;
+    const result = await client.query({
+      query: PROJ_QUERY,
+    });
+    let projectTypes = result.data.projectTypes.edges;
+    projectTypes = projectTypes.map(project => {
+      const finalLink = `/portfolio/${project.node.slug}`;
+      const modifiedProject = { ...project };
+      modifiedProject.node.link = finalLink;
+      return modifiedProject;
+    });
+    this.setState({ projectTypes });
+  }
+  
   render() {
-    const { page } = this.state;
+    const { page, projectTypes } = this.state;
     return (
       <div style={{marginLeft: '315px'}}>
         <h1>Portfolio</h1>
@@ -69,6 +102,17 @@ class Portfolio extends Component {
             __html: page.content,
           }}
         />
+        <div>
+          <h2>Lets check some more shit right here then.</h2>
+          <ul>
+            { projectTypes.map((project) => 
+              <Link to={project.node.link}>
+                <li>{project.node.name}</li>
+              </Link>
+              )
+            }
+          </ul>
+        </div>
       </div>
     );
   }

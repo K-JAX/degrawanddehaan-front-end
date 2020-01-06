@@ -9,9 +9,48 @@ import Logo from '../Atoms/Logo';
 import SidebarMenu from '../Molecules/SidebarMenu';
 import PulloutMenu from '../Molecules/PulloutMenu';
 
+
+class Header extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      mobileMenuActive: null,
+    } 
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick() {
+    this.setState(state => ({
+      mobileMenuActive: state.mobileMenuActive ===  null || state.mobileMenuActive ===  false ? true : false
+    }))
+  }
+  
+  render() {
+    const {mobileMenuActive} = this.state;
+    const { pathname } = this.props.location;
+    const {isHome} = this.props;
+    
+    return (
+      <HeaderElement id="site-header" className={`${isHome ? 'home' : 'normal'} flex pa1 justify-between padding `} >
+        <div className="flex flex-fixed black">
+          <Logo isHome={isHome} />
+          { isHome ? <SidebarMenu /> : <PulloutMenu burgerOnClick={this.handleClick} menuActive={mobileMenuActive} /> }
+        </div>
+      </HeaderElement>
+    );
+  }
+}
+
+export default compose(
+  // withRouter,
+  withApollo,
+)(Header);
+
+
 const HeaderElement = styled.header`
   z-index: 10;
   position: fixed;
+  top: 0;
   &.home{
     float: left;
     width: 277px;
@@ -29,43 +68,3 @@ const HeaderElement = styled.header`
     }    
   }
 `
-
-class Header extends Component {
-  constructor(props){
-    super(props);
-    this.state = {
-      mobileMenuActive: false,
-    } 
-    this.handleClick = this.handleClick.bind(this);
-  }
-
-  handleClick() {
-    this.setState(state => ({
-      mobileMenuActive: !state.mobileMenuActive
-    }))
-  }
-  
-  render() {
-    const {mobileMenuActive} = this.state;
-    const { pathname } = this.props.location;
-    let isHome;
-
-    if ( pathname === '/'){
-      isHome = true
-    };
-    
-    return (
-      <HeaderElement id="site-header" className={`${isHome ? 'home' : 'normal'} flex pa1 justify-between nowrap padding bottomborder `} >
-        <div className="flex flex-fixed black">
-          <Logo />
-          { isHome ? <SidebarMenu /> : <PulloutMenu burgerOnClick={this.handleClick} menuActive={mobileMenuActive} /> }
-        </div>
-      </HeaderElement>
-    );
-  }
-}
-
-export default compose(
-  withRouter,
-  withApollo,
-)(Header);

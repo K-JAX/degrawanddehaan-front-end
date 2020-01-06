@@ -6,8 +6,20 @@ class Burger extends Component {
 
     render() { 
         const { onClick, burgerIsActive } = this.props;
+
+        let burgerStatus;
+
+        if ( burgerIsActive === true) {
+            burgerStatus = 'activeBurger';
+        } else if ( burgerIsActive === false) {
+            burgerStatus = 'cancelBurger';
+        } else {
+            burgerStatus = '';
+        }
+
+
         return ( 
-            <Patty type="button" onClick={onClick} className={`burger ${burgerIsActive ? 'activeBurger' : ''}`}>
+            <Patty type="button" onClick={onClick} className={`burger ${burgerStatus}`}>
                 <div className="bread-ham-cheese"/>
             </Patty>
          );
@@ -17,7 +29,10 @@ class Burger extends Component {
 export default Burger;
 
 
+const duration = 1.25;
+
 const Patty = styled.button`
+    opacity: 0;
     justify-self: flex-end;
     align-self: center;
     position: relative;
@@ -30,8 +45,6 @@ const Patty = styled.button`
     overflow: hidden;
     background: transparent;
     cursor: pointer;
-    animation: 2s hideCancel forwards;
-
     .bread-ham-cheese {
         position: absolute;
         left: 0;
@@ -39,7 +52,7 @@ const Patty = styled.button`
         width: 100%;
         height: 100%;
         border-top: 2px solid black;
-        transition: border 0s 1.0s;
+        transition: border 0s ${duration / 2}s;
         &:before, &:after {
             content: '';
             position: absolute;
@@ -53,24 +66,34 @@ const Patty = styled.button`
         &:before{
             width: 45%;
             top: 0px;
-            animation: 2s reverseBackSlash forwards;
         }
         &:after{
             width: 75%;
-            animation: 2s reverseForwardSlash forwards;
+        }
+    }
+
+    &.cancelBurger{
+        animation: ${duration}s hideCancel forwards;
+        .bread-ham-cheese{
+            &:before{
+                animation: ${duration}s reverseBackSlash forwards;
+            }
+            &:after{
+                animation: ${duration}s reverseForwardSlash forwards;
+            }
         }
     }
 
     &.activeBurger{
-        animation: 2s showCancel forwards;
+        animation: ${duration}s showCancel forwards;
         .bread-ham-cheese{
             border-top: 0 solid black;
-            transition: border 0s 0.6s;
+            transition: border 0s ${duration / 3}s;
             &:before{
-                animation: 2s rotateBackSlash forwards;
+                animation: ${duration}s rotateBackSlash forwards;
             }
             &:after{
-                animation: 2s rotateForwardSlash forwards;
+                animation: ${duration}s rotateForwardSlash forwards;
             }
         }
     }
@@ -82,13 +105,16 @@ const Patty = styled.button`
         30%{
             width: 0;
             opacity: 1;
+            transform: rotateZ(0);
         }
         31%{
             width: 46px; 
             opacity: 0;
+            transform: rotateY(60deg) rotateX(-60deg);
         }
         100%{
             opacity: 1;
+            transform: rotateY(0deg) rotateX(0deg);
         }
     }
 
@@ -207,3 +233,4 @@ const Patty = styled.button`
         outline: none;
     }
 `
+

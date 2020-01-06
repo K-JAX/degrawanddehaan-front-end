@@ -71,6 +71,7 @@ class Home extends Component {
     posts: [],
   };
 
+  
   // used as a authenticated GraphQL client
   authClient = null;
 
@@ -163,6 +164,7 @@ class Home extends Component {
   render() {
     const authToken = localStorage.getItem(AUTH_TOKEN);
     const { page, posts, pages, userId } = this.state;
+
     return (
       <div style={{ marginLeft: '315px' }}>
         <div className="pa2">

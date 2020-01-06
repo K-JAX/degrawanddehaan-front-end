@@ -1,16 +1,27 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../../static/images/logo.png';
+import styled from 'styled-components';
 
-const headerImageStyle = {
-  marginTop: '50px',
-  maxWidth: '100%',
+const Logo = (props) => {
+  const {isHome} = props;
+  return(
+    <Link to="/" className="no-underline black">
+      <LogoElement src={logo} alt="logo" className={`${isHome ? 'home-logo' : 'normal-logo'}`}/>
+    </Link>
+  )
 };
-
-const Logo = () => (
-  <Link to="/" className="no-underline black">
-    <img src={logo} width="215" style={headerImageStyle} alt="logo" />
-  </Link>
-);
-
 export default Logo;
+
+const LogoElement = styled.img`
+  max-width: 100%;
+  transition: 0.125s;
+  &.home-logo{
+    width: 215px;
+    margin-top: 50px;
+  }
+  &.normal-logo{
+    width: 184px;
+    margin-top: 27px;
+  }
+`

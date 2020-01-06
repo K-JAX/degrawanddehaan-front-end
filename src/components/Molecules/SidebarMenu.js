@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 // Components
 import Nav from './Nav';
+import SocialMenu from './SocialMenu';
 
 class SidebarMenu extends Component {
     state = {  }
@@ -12,13 +13,14 @@ class SidebarMenu extends Component {
         return ( 
             <SidebarMenuElem>
                 <Nav className="menuBox"/>
+                <br/>
+                <SocialMenu />
             </SidebarMenuElem>
         );
     }
 }
  
 export default SidebarMenu;
-
 
 const SidebarMenuElem = styled.div`
     .menuBox{

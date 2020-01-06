@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { withApollo } from 'react-apollo';
+import { Link } from 'react-router-dom';
 import gql from 'graphql-tag';
 
 /**
@@ -15,25 +16,43 @@ const PAGE_QUERY = gql`
   }
 `;
 
+const PROJ_QUERY = gql`
+  query ProjectQuery {
+    projects {
+      edges {
+        node {
+          title
+          slug
+          content
+        }
+      }
+    }
+  }
+`;
+
+
 /**
  * Fetch and display a Page
  */
-class Page extends Component {
+class Portfolio extends Component {
   state = {
     page: {
       title: '',
       content: '',
     },
+    projects: []
   };
 
   componentDidMount() {
     this.executePageQuery();
+    this.executeProjectQuery();
   }
 
   componentDidUpdate( prevProps ) {
     let { props } = this;
     if(props.match.params.slug !== prevProps.match.params.slug){
       this.executePageQuery();
+      this.executeProjectQuery();
     }
   }  
   
@@ -54,12 +73,26 @@ class Page extends Component {
     this.setState({ page });
   };
 
+  executeProjectQuery = async () => {
+    const { match, client } = this.props;
+    const result = await client.query({
+      query: PROJ_QUERY,
+    });
+    let projects = result.data.projects.edges;
+    projects = projects.map(project => {
+      const finalLink = `/portfolio/${project.node.slug}`;
+      const modifiedProject = { ...project };
+      modifiedProject.node.link = finalLink;
+      return modifiedProject;
+    });
+    this.setState({ projects });
+  }
+  
   render() {
-    const { page } = this.state;
-          console.log(this.props.location)
-
+    const { page, projects } = this.state;
     return (
       <div style={{marginLeft: '315px'}}>
+        <h1>Portfolio</h1>
         <p>{JSON.stringify(page)}</p>
         <div className="pa2">
           <h1>{page.title}</h1>
@@ -70,9 +103,20 @@ class Page extends Component {
             __html: page.content,
           }}
         />
+        <div>
+          <h2>Lets check some more shit right here then.</h2>
+          <ul>
+            { projects.map((project) => 
+              <Link to={project.node.link}>
+                <li>{project.node.title}</li>
+              </Link>
+              )
+            }
+          </ul>
+        </div>
       </div>
     );
   }
 }
 
-export default withApollo(Page);
+export default withApollo(Portfolio);

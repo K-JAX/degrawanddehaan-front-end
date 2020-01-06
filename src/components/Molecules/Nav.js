@@ -50,7 +50,7 @@ class Nav extends Component {
       const { className, history } = this.props;      
       const { menus } = this.state;
       const { pathname } = this.props;
-      var isHome;
+      let isHome;
 
       if ( pathname === '/'){
         isHome = true
@@ -86,6 +86,6 @@ class Nav extends Component {
 }
  
 export default compose(
-  withRouter,
+  // withRouter,
   withApollo,
 )(Nav);
