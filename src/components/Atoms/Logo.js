@@ -22,6 +22,8 @@ const LogoElement = styled.img`
   }
   &.normal-logo{
     width: 184px;
-    margin-top: 27px;
+    margin-top: 0;
+    padding: 33px 30px;
+    background-color: rgba(227, 224, 224,0.85);
   }
 `

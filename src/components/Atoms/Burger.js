@@ -2,10 +2,28 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 
 class Burger extends Component {
-    state = {  }
+    state = { 
+        isHovered: false
+     }
 
+    addHover = (event) => {
+        this.setState({
+            isHovered: true
+        })
+    }
+
+    removeHover = (event) => {
+        this.setState({
+            isHovered: false
+        })
+    }
+    
     render() { 
-        const { onClick, burgerIsActive } = this.props;
+        const { isHovered } = this.state;
+        const { 
+            onClick, 
+            burgerIsActive 
+        } = this.props;
 
         let burgerStatus;
 
@@ -19,7 +37,7 @@ class Burger extends Component {
 
 
         return ( 
-            <Patty type="button" onClick={onClick} className={`burger ${burgerStatus}`}>
+            <Patty type="button" onMouseEnter={this.addHover} onMouseLeave={this.removeHover} onClick={onClick} className={`burger ${isHovered ? 'hovering' : ''} ${burgerStatus}`}>
                 <div className="bread-ham-cheese"/>
             </Patty>
          );
@@ -33,7 +51,7 @@ const duration = 1.25;
 
 const Patty = styled.button`
     opacity: 0;
-    justify-self: flex-end;
+    justify-self: end;
     align-self: center;
     position: relative;
     z-index: 10;
@@ -41,18 +59,19 @@ const Patty = styled.button`
     height: 28px;
     margin-left: auto;
     padding: 0;
+    margin-right: 20px;
     border: none;
     overflow: hidden;
     background: transparent;
     cursor: pointer;
     .bread-ham-cheese {
         position: absolute;
-        left: 0;
+        right: 0;
         top: 0;
         width: 100%;
         height: 100%;
         border-top: 2px solid black;
-        transition: border 0s ${duration / 2}s;
+        transition: border 0s ${duration / 2}s, width 0.5s;
         &:before, &:after {
             content: '';
             position: absolute;
@@ -61,7 +80,7 @@ const Patty = styled.button`
             right: 0;
             bottom: 2px;
             margin: auto;
-            transition: 0.25s;
+            transition: 0.5s;
         }
         &:before{
             width: 45%;
@@ -71,7 +90,17 @@ const Patty = styled.button`
             width: 75%;
         }
     }
-
+    &.hovering{
+        .bread-ham-cheese{
+            width: 90%;
+            &:before{
+                width: 65%;
+            }
+            &:after{
+                width:  85%;
+            }
+        }
+    }
     &.cancelBurger{
         animation: ${duration}s hideCancel forwards;
         .bread-ham-cheese{

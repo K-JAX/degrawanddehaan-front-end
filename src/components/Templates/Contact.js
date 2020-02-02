@@ -1,14 +1,18 @@
 import React, { Component } from 'react';
 import { withApollo } from 'react-apollo';
 import gql from 'graphql-tag';
+import axios from 'axios';
+
+// Components
+import Form from '../Organisms/Form';
 
 /**
  * GraphQL page query that takes a page slug as a uri
  * Returns the title and content of the page
  */
 const PAGE_QUERY = gql`
-  query PageQuery($uri: String!) {
-    pageBy(uri: $uri) {
+  query PageQuery {
+    pageBy(uri: "contact") {
       title
       content
     }
@@ -18,25 +22,43 @@ const PAGE_QUERY = gql`
 /**
  * Fetch and display a Page
  */
-class Page extends Component {
-  state = {
-    page: {
-      title: '',
-      content: '',
-    },
-  };
+class Contact extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoaded: false,
+      page: {
+        title: '',
+        content: '',
+      },
+      form: [],
+    };
+  }
+
+
 
   componentDidMount() {
     this.executePageQuery();
+    this.getForm();
   }
 
   componentDidUpdate( prevProps ) {
     let { props } = this;
     if(props.match.params.slug !== prevProps.match.params.slug){
       this.executePageQuery();
+      // this.getForm();
     }
   }  
-  
+
+  getForm = () => {
+      axios.get('http://localhost:8080/wp-json/forms/v1/forms/51')
+        .then(res => {
+            const form = res.data;
+            this.setState({ isLoaded: true, form });
+        })
+  }
+
+
   /**
    * Execute page query, process the response and set the state
    */
@@ -54,24 +76,32 @@ class Page extends Component {
     this.setState({ page });
   };
 
+  // renderForm = () => {
+  //   const {form, isLoaded} = this.state;
+
+  //     form.fields.map((field) => {
+  //        return <li>{ field.name }</li>
+  //     });
+  // }
+  
+
+
   render() {
-    const { page } = this.state;
+    const { page, form, isLoaded } = this.state;
 
     return (
       <div style={{marginLeft: '315px'}}>
-        <p>{JSON.stringify(page)}</p>
         <div className="pa2">
           <h1>{page.title}</h1>
         </div>
-        <div
-          // eslint-disable-next-line react/no-danger
-          dangerouslySetInnerHTML={{
-            __html: page.content,
-          }}
-        />
+        <div>
+          <h2>Lets check some more shit right here then.</h2>
+        </div>
+        {/* <div dangerouslySetInnerHTML={{__html: page.content }} /> */}
+        { isLoaded ? <Form data={form} /> : '' }
       </div>
     );
   }
 }
 
-export default withApollo(Page);
+export default withApollo(Contact);

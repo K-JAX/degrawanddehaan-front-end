@@ -2,14 +2,18 @@ import React, { Component } from 'react';
 import { withApollo } from 'react-apollo';
 import { Link } from 'react-router-dom';
 import gql from 'graphql-tag';
+import styled from 'styled-components';
 
+// Component
+import Headline from '../Atoms/Headline';
+import FigureLink from '../Organisms/FigureLink';
 /**
  * GraphQL page query that takes a page slug as a uri
  * Returns the title and content of the page
  */
 const PAGE_QUERY = gql`
-  query PageQuery($uri: String!) {
-    pageBy(uri: $uri) {
+  query PageQuery{
+    pageBy(uri: "portfolio") {
       title
       content
     }
@@ -23,6 +27,14 @@ const PROJ_QUERY = gql`
         node {
           slug
           name
+          featured_image{
+            thumbnail
+            medium
+            medium_large
+            large
+            full
+            default
+          }
         }
       }
     }
@@ -89,33 +101,79 @@ class Portfolio extends Component {
   
   render() {
     const { page, projectTypes } = this.state;
+    const { loaded } = this.props;
+    
+    console.log(page.content);
+    
     return (
-      <div style={{marginLeft: '315px'}}>
-        <h1>Portfolio</h1>
-        <p>{JSON.stringify(page)}</p>
-        <div className="pa2">
-          <h1>{page.title}</h1>
-        </div>
-        <div
-          // eslint-disable-next-line react/no-danger
-          dangerouslySetInnerHTML={{
-            __html: page.content,
-          }}
-        />
-        <div>
-          <h2>Lets check some more shit right here then.</h2>
+      <PortfolioTemplate className="template-container">
+        <Headline text={page.title} loaded={loaded} />
+        <nav>
+          
           <ul>
-            { projectTypes.map((project) => 
-              <Link to={project.node.link}>
-                <li>{project.node.name}</li>
-              </Link>
+            { projectTypes.map((project, index ) => 
+              
+                <li key={index} >
+                  
+                  <Link to={project.node.link}>
+                  <FigureLink 
+                    alignment={index % 2 ? 'right' : 'left'} 
+                    img={ project.node.featured_image.default } 
+                    captionTitle={ project.node.name } 
+                  />
+                  {/* <img 
+                  src={project.node.featured_image.medium_large}
+                  srcSet={
+                    project.node.featured_image.thumbnail + ', ' +
+                    project.node.featured_image.medium + ', ' +
+                    project.node.featured_image.medium_large + ', ' +
+                    project.node.featured_image.large + ', ' +
+                    project.node.featured_image.full
+                  }
+                  alt={`Figure for ${project.node.name}`}
+                  /> */}
+                  </Link>
+                </li>
+
+              
               )
             }
           </ul>
-        </div>
-      </div>
+        </nav>
+      </PortfolioTemplate>
     );
   }
 }
 
 export default withApollo(Portfolio);
+
+
+const PortfolioTemplate = styled.main`
+  grid-template-areas: 
+    '. body marginR'
+    '. body .';
+  grid-template-columns: 50px auto 50px;
+  .page-heading{
+    grid-area: marginR;
+    justify-self: end;
+  }
+  nav{
+    grid-column-start: 1;
+    grid-column-end: 4;
+    ul{
+      display: grid;
+      grid-template-columns: 50% 50%;
+      grid-template-rows: 700px;
+      padding-left: 0;
+      list-style: none;
+      li {
+        width: auto;
+        height:100%;
+        a{
+          text-decoration: none;
+        }
+
+      }
+    }
+  }
+`

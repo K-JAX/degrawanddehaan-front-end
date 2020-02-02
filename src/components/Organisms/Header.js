@@ -31,7 +31,7 @@ class Header extends Component {
     const {isHome} = this.props;
     
     return (
-      <HeaderElement id="site-header" className={`${isHome ? 'home' : 'normal'} flex pa1 justify-between padding `} >
+      <HeaderElement id="site-header" className={`${isHome ? 'home' : 'normal'} flex pa1 justify-between  `} >
         <div className="flex flex-fixed black">
           <Logo isHome={isHome} />
           { isHome ? <SidebarMenu /> : <PulloutMenu burgerOnClick={this.handleClick} menuActive={mobileMenuActive} /> }
@@ -61,7 +61,8 @@ const HeaderElement = styled.header`
   }
   &.normal{
     width: 100%;
-    height: 200px;
+    height: 178px;
+    padding: 0;
     .flex{
       width: 100%;
       flex-direction: row;

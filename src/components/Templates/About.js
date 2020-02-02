@@ -8,8 +8,8 @@ import gql from 'graphql-tag';
  * Returns the title and content of the page
  */
 const PAGE_QUERY = gql`
-  query PageQuery($uri: String!) {
-    pageBy(uri: $uri) {
+  query PageQuery {
+    pageBy(uri: "about") {
       title
       content
     }
@@ -18,14 +18,19 @@ const PAGE_QUERY = gql`
 
 const PROJ_QUERY = gql`
   query ProjectQuery {
-    projects {
-      edges {
+    teamMembers {
+        edges {
         node {
-          title
-          slug
-          content
+            title
+            uri
+            link
+            content
+            featuredImage {
+            srcSet
+            sourceUrl
+            }
         }
-      }
+        }
     }
   }
 `;
@@ -34,25 +39,25 @@ const PROJ_QUERY = gql`
 /**
  * Fetch and display a Page
  */
-class Portfolio extends Component {
+class About extends Component {
   state = {
     page: {
       title: '',
       content: '',
     },
-    projects: []
+    teamMembers: []
   };
 
   componentDidMount() {
     this.executePageQuery();
-    this.executeProjectQuery();
+    this.executeProjectTypeQuery();
   }
 
   componentDidUpdate( prevProps ) {
     let { props } = this;
     if(props.match.params.slug !== prevProps.match.params.slug){
       this.executePageQuery();
-      this.executeProjectQuery();
+      this.executeProjectTypeQuery();
     }
   }  
   
@@ -61,39 +66,33 @@ class Portfolio extends Component {
    */
   executePageQuery = async () => {
     const { match, client } = this.props;
+    console.log(match);
     let uri = match.params.slug;
     if (!uri) {
       uri = 'welcome';
     }
     const result = await client.query({
       query: PAGE_QUERY,
-      variables: { uri },
     });
     const page = result.data.pageBy;
     this.setState({ page });
   };
 
-  executeProjectQuery = async () => {
-    const { match, client } = this.props;
+  executeProjectTypeQuery = async () => {
+    const { client } = this.props;
     const result = await client.query({
       query: PROJ_QUERY,
     });
-    let projects = result.data.projects.edges;
-    projects = projects.map(project => {
-      const finalLink = `/portfolio/${project.node.slug}`;
-      const modifiedProject = { ...project };
-      modifiedProject.node.link = finalLink;
-      return modifiedProject;
-    });
-    this.setState({ projects });
+    let teamMembers = result.data.teamMembers.edges;
+
+    this.setState({ teamMembers });
   }
   
   render() {
-    const { page, projects } = this.state;
+    const { page, teamMembers } = this.state;
+    console.log(page);
     return (
       <div style={{marginLeft: '315px'}}>
-        <h1>Portfolio</h1>
-        <p>{JSON.stringify(page)}</p>
         <div className="pa2">
           <h1>{page.title}</h1>
         </div>
@@ -105,18 +104,11 @@ class Portfolio extends Component {
         />
         <div>
           <h2>Lets check some more shit right here then.</h2>
-          <ul>
-            { projects.map((project) => 
-              <Link to={project.node.link}>
-                <li>{project.node.title}</li>
-              </Link>
-              )
-            }
-          </ul>
+        <p>{JSON.stringify(teamMembers)}</p>
         </div>
       </div>
     );
   }
 }
 
-export default withApollo(Portfolio);
+export default withApollo(About);

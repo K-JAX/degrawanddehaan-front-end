@@ -6,6 +6,10 @@ import Home from './Templates/Home';
 import Search from './Search';
 import Page from './Page';
 import Portfolio from './Templates/Portfolio';
+import ProjectType from './Templates/Project-Type';
+import ProjectSingle from './Templates/Project-Single';
+import About from './Templates/About';
+import Contact from './Templates/Contact';
 import Post from './Post';
 import Category from './Category';
 import styled from 'styled-components';
@@ -25,24 +29,32 @@ export default (props) => {
   })
 
   return(
-    <div className={`center ${ loaded ? 'loaded' : ''}`}>
+    <BodyContainer className={`center ${ loaded ? 'loaded' : ''}`}>
       <Header location={location} isHome={isHome} />
-      <PageContainerElement className={`pa1 padding table ${isHome ? '' : 'offset-header'}`}>
+      <PageContainerElement className={` ${isHome ? '' : 'offset-header'}`}>
         <Switch >
           <Route exact path="/" component={Home} />
           <Route exact path="/search" component={Search} />
-          <Route exact path="/page/portfolio" component={Portfolio} />
+          <Route exact path="/page/portfolio" component={Portfolio} loaded={loaded} />
+          <Route exact path="/page/about" component={About} />
+          <Route exact path="/page/contact" component={Contact} />
+          <Route exact path="/portfolio/:slug" component={ProjectType} />
+          <Route exact path="/portfolio/:taxonomy/:slug" component={ProjectSingle} />
           <Route exact path="/page/:slug" component={Page} />
           <Route exact path="/post/:slug" component={Post} />
           <Route exact path="/category/:slug" component={Category} />
         </Switch>
       </PageContainerElement>
       <Footer isHome={isHome} />
-    </div>
+    </BodyContainer>
 )};
 
+const BodyContainer = styled.div`
+  display: grid;
+`
 
 const PageContainerElement = styled.div`
+  margin-bottom: 100px;
   &.offset-header{
     margin-top: 175px;
   }

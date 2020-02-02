@@ -8,6 +8,11 @@ import { ApolloClient } from 'apollo-boost';
 import { AUTH_TOKEN } from '../../constants';
 import Config from '../../config';
 
+
+// Components
+import ProjectSingle from '../Templates/Project-Single';
+
+
 /**
  * GraphQL page query
  * Gets page's title and content using slug as uri
@@ -170,12 +175,13 @@ class Home extends Component {
         <div className="pa2">
 
           <h1>{page.title}</h1>
-          <span
+          {/* <span
             // eslint-disable-next-line react/no-danger
             dangerouslySetInnerHTML={{
               __html: page.content,
             }}
-          />
+          /> */}
+          {/* <ProjectSingle /> */}
         </div>
       </div>
     );

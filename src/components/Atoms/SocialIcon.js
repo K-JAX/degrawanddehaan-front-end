@@ -9,7 +9,7 @@ class SocialLink extends Component {
         const { link, icon } = this.props;
         
         return ( 
-            <a href={link} className="social-link" target="_blank" >
+            <a href={link} className="social-link" target="_blank" rel="noopener noreferrer" >
                 <SVGElem className="social-icon" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <Rect />
                     <BorderWipe />
@@ -34,7 +34,7 @@ const Rect = () => (
 );
 
 const BorderWipe = () => (
-    <path className='border-wipe' d="M1 39L39 39" stroke="black" stroke-width="2"/>    
+    <path className='border-wipe' d="M1 39L39 39" stroke="black" strokeWidth="2"/>    
 );
  
 
